@@ -3,4 +3,4 @@ services:
   springrest:
     image: ghcr.io/alvarodcr/hello-springrest/springrest:latest
     ports:
-      - "80:80"
+      - "80:8080"
