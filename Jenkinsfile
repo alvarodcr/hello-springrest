@@ -18,6 +18,12 @@ pipeline {
 	
     stages {
         
+	stage('GRADLE --> TESTING') {
+            steps{
+		sh './gradlew test''	
+	    }	                              
+        }
+	    
 	stage('DOCKER --> BUILDING & TAGGING IMAGE') {
             steps{
 		sh """
