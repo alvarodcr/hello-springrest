@@ -31,7 +31,7 @@ pipeline {
                 success {
                     // Publish test results in JUnit format and print test result files in the console
                     junit 'build/test-results/**/*.xml'
-                    step([$class: 'TestResultAnalyzer', testResults: 'build/test-results/**/*.xml'])
+           
                 }
                 failure {
                     // Print an error message in red if the stage fails
@@ -73,6 +73,7 @@ pipeline {
         // Define the "EB --> DEPLOYING" stage
         stage('EB --> DEPLOYING') {
             steps {
+		// This step allows the pipeline to use the specified AWS credentials when performing AWS related tasks.
                 withAWS(credentials:AWS_KEY_ROOT) {
 		    // Change to the "eb-files" directory and deploy the Elastic Beanstalk application
 		    dir ("eb-files"){
