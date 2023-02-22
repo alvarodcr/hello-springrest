@@ -22,21 +22,28 @@ pipeline {
      
 	stage('GRADLE --> TESTING') {
 	    // Define the steps to run in this stage, which include running the "test" task with Gradle
-	    steps{
-		sh './gradlew test assemble'   
-	    }        
+	    steps {
+                // Clean the project and run the tests with Jacoco enabled
+                sh './gradlew clean jacocoTestReport'
+
+                // Publish the Jacoco coverage report in HTML format
+                publishHTML([
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'build/reports/jacoco/test/html',
+                    reportFiles: 'index.html',
+                    reportName: "Jacoco Code Coverage Report"
+                ])
+	    }
 	    // Define post-actions to run after the stage has completed, including printing test results and error messages
 	    post {
 		success {
-		    // Publish test results in JUnit format
-		    //junit 'build/test-results/**/*.xml'
-		    // Run Jacoco code coverage report and publish results
-		    jacoco(
-		         execPattern: 'target/*.exec',
-		         classPattern: 'target/classes',
-		         sourcePattern: 'src/main/java',
-		         exclusionPattern: 'src/test*'
-		    )   
+		    // Archive the generated Jacoco coverage report files
+            	    archiveArtifacts artifacts: 'build/reports/jacoco/test.exec'
+
+            	    // Publish the generated Jacoco coverage report files to Jenkins
+            	    jacoco(execPattern: 'build/reports/jacoco/test.exec', classPattern: 'build/classes/java/main/**/*.class', sourcePattern: 'src/main/java/**/*.java')
 		}
 		failure {
 		    // Print an error message in red if the stage fails
