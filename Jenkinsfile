@@ -54,11 +54,10 @@ pipeline {
             always {
            	junit '**/target/surefire-reports/TEST-*.xml'
             }
-        }
-	failure {
+	    failure {
            	echo "\033[20mFAILED!\033[0m"
-        }
-  
+            }
+	}
 	   
     }     
 }
