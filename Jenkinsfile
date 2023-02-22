@@ -49,15 +49,15 @@ pipeline {
 		}
 	    }
         }
+    }    
+       	
+        post {
+    	    always {
+		junit '**/target/surefire-reports/TEST-*.xml'
+    		}
+    	     failure {
+		echo "\033[20mFAILED!\033[0m"
+    		}
+	}	   
          
-       	post {
-            always {
-           	junit '**/target/surefire-reports/TEST-*.xml'
-            }
-	    failure {
-           	echo "\033[20mFAILED!\033[0m"
-            }
-	}
-	   
-    }     
 }
