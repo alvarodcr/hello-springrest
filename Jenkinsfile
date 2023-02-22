@@ -9,7 +9,6 @@ def AWS_KEY_ROOT = '2934977b-3b53-4065-8b4a-312c2259a9f3'		// AWS credentials fo
 def VERSION = "1.0.${BUILD_NUMBER}"					// TAG version with BUILD_NUMBER
 
 pipeline {
-    // Define the Jenkins agent to run the pipeline on
     agent any 
     
     // Define some options for the pipeline, such as timestamps and ANSI color support
@@ -20,7 +19,7 @@ pipeline {
 	
     // Define the stages of the pipeline
     stages {
-        // Define the "GRADLE --> TESTING" stage
+     
         stage('GRADLE --> TESTING') {
             // Define the steps to run in this stage, which include running the "test" task with Gradle
             steps{
@@ -45,7 +44,6 @@ pipeline {
             }	 
         }
         
-        // Define the "DOCKER --> BUILDING & TAGGING IMAGE" stage
         stage('DOCKER --> BUILDING & TAGGING IMAGE') {
             // Define the steps to run in this stage, which include building a Docker image and tagging it with a version number
             steps{
@@ -61,7 +59,6 @@ pipeline {
             }	                              
         }  
         
-        // Define the "DOCKER --> LOGIN & PUSHING TO GHCR.IO" stage
         stage('DOCKER --> LOGIN & PUSHING TO GHCR.IO') {
             steps{ 
                 // Authenticate to the GitHub Container Registry (GHCR) using a Docker access token, and push the Docker images to GHCR
@@ -75,7 +72,6 @@ pipeline {
             }
         }   
         
-        // Define the "EB --> DEPLOYING" stage
         stage('Elastic Bean Stalk --> DEPLOYING') {
             steps {
 		// This step allows the pipeline to use the specified AWS credentials when performing AWS related tasks.
