@@ -22,29 +22,21 @@ pipeline {
      
 	stage('GRADLE --> TESTING') {
 	    // Define the steps to run in this stage, which include running the "test" task with Gradle
-	    steps {
-                // Clean the project and run the tests with Jacoco enabled
-                sh './gradlew clean jacocoTestReport'
-
-                // Publish the Jacoco coverage report in HTML format
-                publishHTML([
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: 'build/reports/jacoco/test/html',
-                    reportFiles: 'index.html',
-                    reportName: "Jacoco Code Coverage Report"
-                ])
-	    }
-	    // Define post-actions to run after the stage has completed, including printing test results and error messages
-	    post {
-		success {
-		    // Archive the generated Jacoco coverage report files
-            	    archiveArtifacts artifacts: 'build/reports/jacoco/test.exec'
-
-            	    // Publish the generated Jacoco coverage report files to Jenkins
-            	    jacoco(execPattern: 'build/reports/jacoco/test.exec', classPattern: 'build/classes/java/main/**/*.class', sourcePattern: 'src/main/java/**/*.java')
-		}
+	   steps {
+                sh './gradlew clean test jacocoTestReport'
+            }
+            post {
+                always {
+                    jacoco(execPattern: '**/build/jacoco/test.exec', classPattern: '**/build/classes/java/main/**/*.class', sourcePattern: '**/src/main/java', inclusionPattern: '**/*Application.class', minimumInstructionCoverage: 0.5, maximumInstructionCoverage: 0.99, minimumBranchCoverage: 0.5, maximumBranchCoverage: 0.99, minimumComplexityCoverage: 0, maximumComplexityCoverage: 10, minimumLineCoverage: 0.5, maximumLineCoverage: 0.99, minimumMethodCoverage: 0.5, maximumMethodCoverage: 0.99, minimumClassCoverage: 0.5, maximumClassCoverage: 0.99)
+                    publishHTML(target: [
+                        allowMissing: true,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'build/reports/jacoco/test/html',
+                        reportFiles: 'index.html',
+                        reportName: 'JaCoCo Code Coverage Report'
+                    ])
+                }
 		failure {
 		    // Print an error message in red if the stage fails
 		    echo "\033[20mFAILED!\033[0m"
