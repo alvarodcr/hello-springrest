@@ -20,29 +20,34 @@ pipeline {
     // Define the stages of the pipeline
     stages {
      
-        stage('GRADLE --> TESTING') {
-            // Define the steps to run in this stage, which include running the "test" task with Gradle
-            steps{
-                sh './gradlew test'   
-            }        
-            // Define post-actions to run after the stage has completed, including printing test results and error messages
-            post {
-                success {
-                    // Publish test results in JUnit format and print test result files in the console
-                    junit 'build/test-results/**/*.xml'
-		    // Generate Jacoco coverage report
-		    jacoco(execPattern: 'build/jacoco/test.exec') {
-                	classPattern = 'com.example.*'
-                	sourcePattern = 'src/main/java'
-                	reportPattern = 'build/jacoco/test/html'
-            	    }
-                }	    
-                failure {
-                    // Print an error message in red if the stage fails
-                    echo "\033[20mFAILED!\033[0m"
-                }
-            }	 
-        }
+	stage('GRADLE --> TESTING') {
+	    // Define the steps to run in this stage, which include running the "test" task with Gradle
+	    steps{
+		sh './gradlew test'   
+	    }        
+	    // Define post-actions to run after the stage has completed, including printing test results and error messages
+	    post {
+		success {
+		    // Publish test results in JUnit format and print test result files in the console
+		    junit 'build/test-results/**/*.xml'
+
+		    // Run Jacoco code coverage report and publish results
+		    jacoco(execPattern: 'build/jacoco/test.exec', classPattern: 'build/classes/java/main/**/*.class', sourcePattern: 'src/main/java/**/*.java')
+		    publishHTML(target: [
+			allowMissing: false,
+			alwaysLinkToLastBuild: true,
+			keepAll: true,
+			reportDir: 'build/jacocoHtml',
+			reportFiles: 'index.html',
+			reportName: "Jacoco Code Coverage Report"
+		    ])
+		}
+		failure {
+		    // Print an error message in red if the stage fails
+		    echo "\033[20mFAILED!\033[0m"
+		}
+	    }	 
+	}
         
         stage('DOCKER --> BUILDING & TAGGING IMAGE') {
             // Define the steps to run in this stage, which include building a Docker image and tagging it with a version number
