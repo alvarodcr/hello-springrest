@@ -23,7 +23,7 @@ pipeline {
 	stage('GRADLE --> TESTING') {
 	    // Define the steps to run in this stage, which include running the "test" task with Gradle
 	    steps{
-		sh './gradlew test assemble'   
+		sh './gradlew clean build jacocoTestReport'   
 	    }        
 	    // Define post-actions to run after the stage has completed, including printing test results and error messages
 	    post {
