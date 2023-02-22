@@ -1,6 +1,6 @@
 //JENKINSFILE								//GITHUB --> DOCKER --> ELASTIC	BEANSTALK --> AWS
 
-def GIT_REPO_PKG = 'ghcr.io/alvarodcr/hello-springrest/springrest'	// GHCR_PKG package repository
+def GIT_REPO_PKG = 'ghcr.io/alvarodcr/hello-springrest/springrest'	// GIT package repository
 def GIT_SSH = 'git-ssh'							// GIT SSH credentials
 def GIT_USER = 'alvarodcr'						// GIT username
 def GHCR_TOKEN = 'ghrc_token'						// ghcr.io credential (token)
@@ -46,7 +46,8 @@ pipeline {
 			    keepAll: true,             				// Keep HTML reports for all builds
 			    reportDir: 'build/jacoco',      			// Define the directory path of the report
 			    reportFiles: 'index.html',   	 		// Define the name of the HTML report file
-			    reportName: "Coverage Report" 			// Define the name of the coverage report
+			    reportName: "HTML Report" 				// Define the name of the report
+			    reportTitles: 'JACOCO HTML Report'			// Define the title of the creport
 		        ]
 		    ])
 		}
