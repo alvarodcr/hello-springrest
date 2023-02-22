@@ -31,7 +31,7 @@ pipeline {
                 success {
                     // Publish test results in JUnit format and print test result files in the console
                     junit 'build/test-results/**/*.xml'
-                    sh 'cat build/test-results/test/*.txt'
+                    sh 'cat build/test-results/test/*.xml'
                 }
                 failure {
                     // Print an error message in red if the stage fails
