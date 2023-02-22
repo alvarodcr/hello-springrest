@@ -13,8 +13,8 @@ pipeline {
     
     // Define some options for the pipeline, such as timestamps and ANSI color support
     options {
-        timestamps()
-        ansiColor('xterm')
+        timestamps() // Add timestamps to the console output
+        ansiColor('xterm') // Enable ANSI color support for the console
     }
 	
     // Define the stages of the pipeline
@@ -23,15 +23,15 @@ pipeline {
 	stage('GRADLE --> TESTING') {
 	    // Define the steps to run in this stage, which include running the "test" task with Gradle
 	    steps {
-                sh './gradlew test assemble'
+                sh './gradlew test build' // Run the "test" and "build" tasks with Gradle
             }
             post {
                 always {
-		    archiveArtifacts 'build/libs/*.jar'
+		    archiveArtifacts 'build/libs/*.jar' // Archive the generated JAR files
                     jacoco(
-			    execPattern: '**/**.exec', 
-			    classPattern: '**/classes', 
-			    sourcePattern: '**/src/main/java', 
+			//execPattern: '**/**.exec', // Specify the pattern for the coverage data files
+			classPattern: '**/classes', // Specify the pattern for the compiled class files
+			sourcePattern: '**/src/main/java', // Specify the pattern for the source code files
 		    )
                 }
 		failure {
@@ -42,23 +42,23 @@ pipeline {
 	}
         
         stage('DOCKER --> BUILDING & TAGGING IMAGE') {
-            // Define the steps to run in this stage, which include building a Docker image and tagging it with a version number
+            // Define building a Docker image and tagging it with a version number
             steps{
                 sh """
-                docker-compose build
-                git tag ${VERSION}
+		docker-compose build
+                sgit tag ${VERSION}" 
                 docker tag ${GIT_REPO_PKG}:latest ${GIT_REPO_PKG}:${VERSION}
-                """
+		"""
                 // Use SSH authentication to push the Git tags to the remote repository
                 sshagent([GIT_SSH]) {
-                    sh 'git push --tags'
+                    sh 'git push --tags' // Push the Git tags to the remote repository
                 }
             }	                              
         }  
         
         stage('DOCKER --> LOGIN & PUSHING TO GHCR.IO') {
-            steps{ 
-                // Authenticate to the GitHub Container Registry (GHCR) using a Docker access token, and push the Docker images to GHCR
+             // Authenticate to the GitHub Container Registry (GHCR) using a Docker access token, and push the Docker images to GHCR
+	     steps{ 
                 withCredentials([string(credentialsId: GHCR_TOKEN, variable: 'TOKEN_GIT')]) {
                     sh """
                     echo $TOKEN_GIT | docker login ghcr.io -u ${GIT_USER} --password-stdin
