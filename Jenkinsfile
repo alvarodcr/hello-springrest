@@ -1,6 +1,6 @@
 //JENKINSFILE								//GITHUB --> DOCKER --> ElasticBeanStalk --> AWS
 
-def GIT_REPO_PKG = 'ghcr.io/alvarodcr/hello-springrest/springrest'// GHCR_PKG package repository
+def GIT_REPO_PKG = 'ghcr.io/alvarodcr/hello-springrest/springrest'	// GHCR_PKG package repository
 def GIT_SSH = 'git-ssh'							// GIT SSH credentials
 def GIT_USER = 'alvarodcr'						// GIT username
 def GHCR_TOKEN = 'ghrc_token'						// ghcr.io credential (token)
