@@ -20,7 +20,7 @@ pipeline {
         
 	stage('GRADLE --> TESTING') {
             steps{
-		sh './gradlew test''	
+		sh './gradlew test'	
 	    }		
 	    post {
 	    	always {
