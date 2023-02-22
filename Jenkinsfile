@@ -23,7 +23,7 @@ pipeline {
 	stage('GRADLE --> TESTING') {
 	    // Define the steps to run in this stage, which include running the "test" task with Gradle
 	    steps {
-                sh './gradlew test'
+                sh './gradlew test assemble'
             }
             post {
                 always {
