@@ -44,6 +44,7 @@ pipeline {
 			    allowMissing: false,        			// Fail the build if the report file is missing
 			    alwaysLinkToLastBuild: true,			// Link to the latest build even if no report is found
 			    keepAll: true,             				// Keep HTML reports for all builds
+			    reportDir: "${WORKSPACE}/build/jacocoHtml",		// Define the directory of the HTML report file
 			    reportFiles: 'jacoco.html',   	 		// Define the name of the HTML report file
 			    reportName: "HTML Report", 				// Define the name of the report
 			    reportTitles: "JACOCO HTML Report"			// Define the title of the creport
