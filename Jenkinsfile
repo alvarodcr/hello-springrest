@@ -42,7 +42,7 @@ pipeline {
             steps{
                 sh """
 		docker-compose build
-                sgit tag ${VERSION}" 
+                git tag ${VERSION}
                 docker tag ${GIT_REPO_PKG}:latest ${GIT_REPO_PKG}:${VERSION}
 		"""
                 // Use SSH authentication to push the Git tags to the remote repository
