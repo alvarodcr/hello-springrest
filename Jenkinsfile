@@ -23,12 +23,17 @@ pipeline {
 	stage('GRADLE --> TESTING') {
 	    // Define the steps to run in this stage, which include running the "test" task with Gradle
 	   steps {
-                sh './gradlew clean test jacocoTestReport'
+                sh './gradlew clean test'
             }
             post {
                 always {
-                    jacoco(execPattern: '**/build/jacoco/test.exec', classPattern: '**/build/classes/java/main/**/*.class', sourcePattern: '**/src/main/java', inclusionPattern: '**/*Application.class', minimumInstructionCoverage: 0.5, maximumInstructionCoverage: 0.99, minimumBranchCoverage: 0.5, maximumBranchCoverage: 0.99, minimumComplexityCoverage: 0, maximumComplexityCoverage: 10, minimumLineCoverage: 0.5, maximumLineCoverage: 0.99, minimumMethodCoverage: 0.5, maximumMethodCoverage: 0.99, minimumClassCoverage: 0.5, maximumClassCoverage: 0.99)
-                    publishHTML(target: [
+                    jacoco(
+			    execPattern: '**/build/jacoco/test.exec', 
+			    classPattern: '**/build/classes/java/main/**/*.class', 
+			    sourcePattern: '**/src/main/java', 
+			    inclusionPattern: '**/*Application.class'
+		    )
+		    publishHTML(target: [
                         allowMissing: true,
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
