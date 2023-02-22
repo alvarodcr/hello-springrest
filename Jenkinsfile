@@ -1,4 +1,4 @@
-//JENKINSFILE								//GITHUB --> DOCKER --> ElasticBeanStalk --> AWS
+//JENKINSFILE								//GITHUB --> DOCKER --> ELASTIC	BEANSTALK --> AWS
 
 def GIT_REPO_PKG = 'ghcr.io/alvarodcr/hello-springrest/springrest'	// GHCR_PKG package repository
 def GIT_SSH = 'git-ssh'							// GIT SSH credentials
@@ -85,7 +85,7 @@ pipeline {
             }
         }   
         
-        stage('Elastic Bean Stalk --> DEPLOYING') {
+        stage('ELASTIC BEANSTALK --> DEPLOYING') {
             steps {
 		// This step allows the pipeline to use the specified AWS credentials when performing AWS related tasks.
                 withAWS(credentials:AWS_KEY_ROOT) {
