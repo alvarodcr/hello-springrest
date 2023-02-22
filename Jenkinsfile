@@ -27,7 +27,7 @@ pipeline {
             }
             post {
                 always {
-		    archiveArtifacts 'build/libs/*.jar
+		    archiveArtifacts 'build/libs/*.jar'
                     jacoco(
 			    execPattern: '**/**.exec', 
 			    classPattern: '**/classes', 
