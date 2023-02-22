@@ -1,0 +1,7 @@
+version: "3"
+services:
+  springrest:
+    build: .
+    image: ghcr.io/alvarodcr/hello-springrest/springrest:latest
+    ports:
+      - "8080:8080"
