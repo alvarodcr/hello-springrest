@@ -1,4 +1,4 @@
-//JENKINSFILE								//GITHUB --> DOCKER --> TERRAFORM --> ANSIBLE --> AWS
+//JENKINSFILE								//GITHUB --> DOCKER --> ElasticBeanStalk --> AWS
 
 def GIT_REPO_PKG = 'ghcr.io/alvarodcr/hello-springrest/springrest'// GHCR_PKG package repository
 def GIT_SSH = 'git-ssh'							// GIT SSH credentials
@@ -31,8 +31,13 @@ pipeline {
                 success {
                     // Publish test results in JUnit format and print test result files in the console
                     junit 'build/test-results/**/*.xml'
-           
-                }
+		    // Generate Jacoco coverage report
+		    jacoco(execPattern: 'build/jacoco/test.exec') {
+                	classPattern = 'com.example.*'
+                	sourcePattern = 'src/main/java'
+                	reportPattern = 'build/jacoco/test/html'
+            	    }
+                }	    
                 failure {
                     // Print an error message in red if the stage fails
                     echo "\033[20mFAILED!\033[0m"
@@ -71,7 +76,7 @@ pipeline {
         }   
         
         // Define the "EB --> DEPLOYING" stage
-        stage('EB --> DEPLOYING') {
+        stage('Elastic Bean Stalk --> DEPLOYING') {
             steps {
 		// This step allows the pipeline to use the specified AWS credentials when performing AWS related tasks.
                 withAWS(credentials:AWS_KEY_ROOT) {
