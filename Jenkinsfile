@@ -46,8 +46,8 @@ pipeline {
 			    keepAll: true,             				// Keep HTML reports for all builds
 			    reportDir: 'reports',      				// Define the directory path of the report
 			    reportFiles: 'jacoco.html',   	 		// Define the name of the HTML report file
-			    reportName: "HTML Report" 				// Define the name of the report
-			    reportTitles: 'JACOCO HTML Report'			// Define the title of the creport
+			    reportName: "HTML Report", 				// Define the name of the report
+			    reportTitles: "JACOCO HTML Report"			// Define the title of the creport
 		        ]
 		    ])
 		}
