@@ -31,11 +31,12 @@ pipeline {
 		    // Publish test results in JUnit format
 		    //junit 'build/test-results/**/*.xml'
 		    // Run Jacoco code coverage report and publish results
-		    jacoco(execPattern: '**/build/jacoco/test.exec',
-			   classPattern: '**/build/classes/**/*.class',
-			   sourcePattern: '**/src/main/java',
-			   inclusionPattern: '**/*Test.*',
-			   changeBuildStatus: true)
+		    jacoco(
+		         execPattern: 'target/*.exec',
+		         classPattern: 'target/classes',
+		         sourcePattern: 'src/main/java',
+		         exclusionPattern: 'src/test*'
+		    )   
 		}
 		failure {
 		    // Print an error message in red if the stage fails
