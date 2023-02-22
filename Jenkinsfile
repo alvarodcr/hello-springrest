@@ -31,7 +31,7 @@ pipeline {
                 success {
                     // Publish test results in JUnit format and print test result files in the console
                     junit 'build/test-results/**/*.xml'
-                    sh 'cat build/test-results/test/*.xml'
+                    step([$class: 'TestResultAnalyzer', testResults: 'build/test-results/**/*.xml'])
                 }
                 failure {
                     // Print an error message in red if the stage fails
@@ -73,11 +73,14 @@ pipeline {
         // Define the "EB --> DEPLOYING" stage
         stage('EB --> DEPLOYING') {
             steps {
-                // Change to the "eb-files" directory and deploy the Elastic Beanstalk application
-                dir ("eb-files"){
-                    sh 'eb deploy'
-                }
+                withAWS(credentials:AWS_KEY_ROOT) {
+		    // Change to the "eb-files" directory and deploy the Elastic Beanstalk application
+		    dir ("eb-files"){
+                        sh 'eb deploy'
+		    }
+		}
             }
         }
+    
     }                
 }
