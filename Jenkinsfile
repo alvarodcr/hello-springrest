@@ -25,6 +25,7 @@ pipeline {
 	    post {
 	    	success {
 		    junit 'build/test-results/**/*.xml'
+		    sh 'cat build/test-results/test/*.txt'
 		}
 	        failure {
 		    echo "\033[20mFAILED!\033[0m"
