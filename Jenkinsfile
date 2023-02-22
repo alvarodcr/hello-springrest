@@ -21,7 +21,15 @@ pipeline {
 	stage('GRADLE --> TESTING') {
             steps{
 		sh './gradlew test''	
-	    }	                              
+	    }		
+	    post {
+	    	always {
+		    junit '**/target/surefire-reports/TEST-*.xml'
+		}
+	        failure {
+		    echo "\033[20mFAILED!\033[0m"
+		}
+	    }	 
         }
 	    
 	stage('DOCKER --> BUILDING & TAGGING IMAGE') {
@@ -56,15 +64,6 @@ pipeline {
 		}
 	    }
         }
-    }    
-       	
-        post {
-    	    always {
-		junit '**/target/surefire-reports/TEST-*.xml'
-    		}
-    	     failure {
-		echo "\033[20mFAILED!\033[0m"
-    		}
-	}	   
-         
+    
+    }                
 }
