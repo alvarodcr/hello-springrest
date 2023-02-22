@@ -23,8 +23,8 @@ pipeline {
 		sh './gradlew test'	
 	    }		
 	    post {
-	    	always {
-		    junit '**/target/surefire-reports/TEST-*.xml'
+	    	success {
+		    junit 'build/test-results/**/*.xml'
 		}
 	        failure {
 		    echo "\033[20mFAILED!\033[0m"
