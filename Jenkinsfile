@@ -37,6 +37,7 @@ pipeline {
 		    sh """
 		    echo $TOKEN_GIT | docker login ghcr.io -u ${GIT_USER} --password-stdin
 		    docker push ${GIT_REPO_PKG}:${VERSION}
+		    docker push ${GIT_REPO_PKG}:latest
 		    """	
 		}
             }
