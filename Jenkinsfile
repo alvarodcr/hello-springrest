@@ -11,17 +11,14 @@ def VERSION = "1.0.${BUILD_NUMBER}"					// TAG version with BUILD_NUMBER
 pipeline {
     agent any 
     
-    // Define some options for the pipeline, such as timestamps and ANSI color support
     options {
         timestamps() // Add timestamps to the console output
         ansiColor('xterm') // Enable ANSI color support for the console
     }
 	
-    // Define the stages of the pipeline
     stages {
      
 	stage('GRADLE --> TESTING') {
-	    // Define the steps to run in this stage, which include running the "test" task with Gradle
 	    steps {
                 sh './gradlew test build' // Run the "test" and "build" tasks with Gradle
             }
@@ -29,14 +26,13 @@ pipeline {
                 always {
 		    archiveArtifacts 'build/libs/*.jar' // Archive the generated JAR files
                     jacoco(
-			//execPattern: '**/**.exec', // Specify the pattern for the coverage data files
-			classPattern: '**/classes', // Specify the pattern for the compiled class files
+			//execPattern: '**/**.exec', // Specify the pattern for the exec files
+			classPattern: '**/classes', // Specify the pattern for the Java class files
 			sourcePattern: '**/src/main/java', // Specify the pattern for the source code files
 		    )
                 }
 		failure {
-		    // Print an error message in red if the stage fails
-		    echo "\033[20mFAILED!\033[0m"
+		    echo "\033[20mFAILED!\033[0m" // Print an error message in red if the stage fails
 		}
 	    }	 
 	}
@@ -51,7 +47,7 @@ pipeline {
 		"""
                 // Use SSH authentication to push the Git tags to the remote repository
                 sshagent([GIT_SSH]) {
-                    sh 'git push --tags' // Push the Git tags to the remote repository
+                    sh 'git push --tags'
                 }
             }	                              
         }  
