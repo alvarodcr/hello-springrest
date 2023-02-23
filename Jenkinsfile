@@ -20,7 +20,7 @@ pipeline {
      
 	stage('GRADLE --> TESTING') {
 	    steps {
-                sh './gradlew test build' // Run the "test" and "build" tasks with Gradle
+                sh './gradlew test jacocoTestReport' // Run the "test" and "build" tasks with Gradle
             }
             post {
                 always {
