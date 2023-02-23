@@ -43,13 +43,18 @@ pipeline {
             }
             post {
                 success {
+		    // Call the recordIssues task and specify the PMD plugin to collect XML reports generated in the path build/reports/pmd
+		    recordIssues(tools: [
+			pmdParser(pattern: 'build/reports/pmd/*.xml')
+		    ])
+		    // Publish the HTML reports in the build/reports/pmd directory so they can be viewed in Jenkins
 		    publishHTML(target: [
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: 'build/reports/pmd',
-                    reportFiles: '*.html',
-                    reportName: 'PMD Report'
+                        allowMissing: false, // Do not allow missing reports
+                        alwaysLinkToLastBuild: true, // Always link to the latest generated report
+                        keepAll: true, // Keep all generated reports, not just the latest one
+                        reportDir: 'build/reports/pmd', // Directory where the reports are located
+                        reportFiles: '*.html', // HTML files pattern to include in the report
+                        reportName: 'PMD Report' // Name of the report to display in Jenkins
                     ])
                 }
 		failure {
