@@ -96,7 +96,7 @@ pipeline {
             }	                              
         }  
         
-	stage('AQUA-TRIVY --> SECURITY IMAGE SCAN') {
+	stage('AQUA-TRIVY --> DOCKER IMAGE SCAN') {
 	    // Run AquaTrivy to scan docker iamge and generate a JSON report in the workspace directory
 	    steps {
 	        sh "trivy image -f json -o ${WORKSPACE}/build/reports/trivy-image-report.json ${GIT_REPO_PKG}:${VERSION}"
