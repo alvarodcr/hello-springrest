@@ -39,6 +39,6 @@ pmd {
 }
 
 pitest {
-   	consoleOutput = true
-	ignoreFailures = true
+   	outputFormats = ['XML', 'HTML']
+	timestampedReports = true
 }
