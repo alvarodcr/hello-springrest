@@ -40,15 +40,22 @@ pipeline {
 	stage('GRADLE-PMD --> TESTING') {
             steps {
                 sh './gradlew check'
-                publishHTML(target: [
+            }
+            post {
+                sucess {
+		    publishHTML(target: [
                     allowMissing: false,
                     alwaysLinkToLastBuild: true,
                     keepAll: true,
                     reportDir: 'build/reports/pmd',
                     reportFiles: '*.html',
                     reportName: 'PMD Report'
-                ])
-            }
+                    ])
+                }
+		failure {
+		    echo "\033[20mFAILED!\033[0m" // Print an error message in red if the stage fails
+		}
+	    }	      
         }
         
         stage('DOCKER --> BUILDING & TAGGING IMAGE') {
