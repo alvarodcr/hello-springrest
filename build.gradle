@@ -3,6 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'jacoco'
+	id 'pmd'
 }
 
 group = 'com.example'
@@ -29,4 +30,9 @@ jacocoTestReport {
 		xml.required = true
 		html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
 	}
+}
+
+pmd {
+	consoleOutput = true
+	ignoreFailures = true
 }
