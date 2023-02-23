@@ -42,19 +42,8 @@ pipeline {
 	    steps {
 	        sh "trivy fs --security-checks vuln,secret,config -f json -o ${WORKSPACE}/build/reports/trivy-report.json ."
 	    }
-	    post {
-		success {
-		    // Call the recordIssues task and specify the AquaTrivy tool to collect JSON reports generated in the path /workspace
-		    recordIssues(tools: [
-			trivy(pattern: 'build/reports/*.json')
-		    ])
-		}
-		failure {
-		    echo "\033[20mFAILED!\033[0m" // Print an error message in red if the stage fails
-		}
-	    }
 	}
-	    
+	  
 	stage('GRADLE-PMD --> TESTING') {
             steps {
                 sh './gradlew check' // Run the "check" task with Gradle tro generate pmd report files
