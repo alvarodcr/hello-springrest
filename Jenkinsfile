@@ -26,7 +26,7 @@ pipeline {
                 sucess {
 		    archiveArtifacts 'build/libs/*.jar' // Archive the generated JAR files
                     jacoco(
-			execPattern: 'build/jacoco/**.exec', // Specify the pattern for the exec files
+			execPattern: 'build/jacoco/*.exec', // Specify the pattern for the exec files
 			classPattern: '**/classes', // Specify the pattern for the Java class files
 			sourcePattern: '**/src/main/java', // Specify the pattern for the source code files
 		    )
@@ -39,13 +39,13 @@ pipeline {
 	
 	stage('GRADLE-PMD --> TESTING') {
             steps {
-                sh 'gradle check'
+                sh './gradlew check'
                 publishHTML(target: [
                     allowMissing: false,
                     alwaysLinkToLastBuild: true,
                     keepAll: true,
                     reportDir: 'build/reports/pmd',
-                    reportFiles: 'index.html',
+                    reportFiles: '*.html',
                     reportName: 'PMD Report'
                 ])
             }
