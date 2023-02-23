@@ -17,24 +17,6 @@ pipeline {
     }
 	
     stages {
-	    
-	stage('AQUA-TRIVY --> SECURITY SCAN') {
-	    // Run AquaTrivy with the current working directory as the scan target and generate a JSON report in the workspace directory
-	    steps {
-		    sh 'trivy fs -f json -o ${WORKSPACE}/build/reports/trivy/trivy-report.json --security-checks vuln,secret,config .'
-	    }
-	    post {
-		success {
-		    // Call the recordIssues task and specify the AquaTrivy tool to collect JSON reports generated in the path /workspace
-		    recordIssues(tools: [
-			trivy(pattern: '${WORKSPACE}/build/reports/trivy/*.json')
-		    ])
-		}
-		failure {
-		    echo "\033[20mFAILED!\033[0m" // Print an error message in red if the stage fails
-		}
-	    }
-	}
      
 	stage('GRADLE-JACOCO --> TESTING') {
 	    steps {
@@ -55,6 +37,24 @@ pipeline {
 	    }	 
 	}
 	
+	stage('AQUA-TRIVY --> SECURITY SCAN') {
+	    // Run AquaTrivy with the current working directory as the scan target and generate a JSON report in the workspace directory
+	    steps {
+		    sh 'trivy fs -f json -o build/reports/trivy/trivy-report.json --security-checks vuln,secret,config .'
+	    }
+	    post {
+		success {
+		    // Call the recordIssues task and specify the AquaTrivy tool to collect JSON reports generated in the path /workspace
+		    recordIssues(tools: [
+			trivy(pattern: 'build/reports/trivy/*.json')
+		    ])
+		}
+		failure {
+		    echo "\033[20mFAILED!\033[0m" // Print an error message in red if the stage fails
+		}
+	    }
+	}
+	    
 	stage('GRADLE-PMD --> TESTING') {
             steps {
                 sh './gradlew check' // Run the "check" task with Gradle tro generate pmd report files
