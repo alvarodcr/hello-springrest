@@ -45,7 +45,7 @@ pipeline {
                 success {
 		    // Call the recordIssues task and specify the PMD plugin to collect XML reports generated in the path build/reports/pmd
 		    recordIssues(tools: [
-			pmdParser(pattern: 'build/reports/pmd/*.xml')
+			pmdParser(pattern: 'build/reports/pmd/*.html')
 		    ])
 		    // Publish the HTML reports in the build/reports/pmd directory so they can be viewed in Jenkins
 		    publishHTML(target: [
