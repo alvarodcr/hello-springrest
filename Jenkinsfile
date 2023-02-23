@@ -96,6 +96,17 @@ pipeline {
             }	                              
         }  
         
+	stage('AQUA-TRIVY --> SECURITY IMAGE SCAN') {
+	    // Run AquaTrivy with the current working directory as the scan target and generate a JSON report in the workspace directory
+	    steps {
+	        sh "trivy image -f json -o ${WORKSPACE}/build/reports/trivy-image-report.json ${GIT_REPO_PKG}:${VERSION}"
+		// Call the recordIssues task and specify the AquaTrivy tool to collect JSON reports generated in the path /workspace
+	    	recordIssues(tools: [
+		    trivy(pattern: 'build/reports/*.json')
+	    	])
+	    }   
+	}    
+	    
         stage('DOCKER --> LOGIN & PUSHING TO GHCR.IO') {
              // Authenticate to the GitHub Container Registry (GHCR) using a Docker access token, and push the Docker images to GHCR
 	     steps{ 
