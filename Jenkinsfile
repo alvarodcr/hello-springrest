@@ -18,12 +18,12 @@ pipeline {
 	
     stages {
      
-	stage('GRADLE --> TESTING') {
+	stage('GRADLE-JACOCO --> TESTING') {
 	    steps {
                 sh './gradlew test jacocoTestReport' // Run the "test" and "jacocoTestReport" tasks with Gradle
             }
             post {
-                always {
+                sucess {
 		    archiveArtifacts 'build/libs/*.jar' // Archive the generated JAR files
                     jacoco(
 			execPattern: 'build/jacoco/**.exec', // Specify the pattern for the exec files
@@ -36,6 +36,20 @@ pipeline {
 		}
 	    }	 
 	}
+	
+	stage('GRADLE-PMD --> TESTING') {
+            steps {
+                sh 'gradle pmdMain'
+                publishHTML(target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'build/reports/pmd',
+                    reportFiles: 'index.html',
+                    reportName: 'PMD Report'
+                ])
+            }
+        }
         
         stage('DOCKER --> BUILDING & TAGGING IMAGE') {
             // Define building a Docker image and tagging it with a version number
