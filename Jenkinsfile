@@ -40,13 +40,13 @@ pipeline {
 	stage('AQUA-TRIVY --> SECURITY SCAN') {
 	    // Run AquaTrivy with the current working directory as the scan target and generate a JSON report in the workspace directory
 	    steps {
-		    sh "trivy fs -f json -o ${WORKSPACE}/build/trivy/trivy-report.json --security-checks vuln,secret,config ${WORKSPACE}"
+	        sh "trivy fs --security-checks vuln,secret,config -f json -o ${WORKSPACE}/build/reports/trivy-report.json ."
 	    }
 	    post {
 		success {
 		    // Call the recordIssues task and specify the AquaTrivy tool to collect JSON reports generated in the path /workspace
 		    recordIssues(tools: [
-			trivy(pattern: 'build/trivy/*.json')
+			trivy(pattern: 'build/reports/*.json')
 		    ])
 		}
 		failure {
