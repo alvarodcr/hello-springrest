@@ -18,6 +18,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.9.0'
 }
 
 test {
@@ -39,6 +40,7 @@ pmd {
 }
 
 pitest {
+	targetClasses = ['${WORKSPACE}']
    	outputFormats = ['XML', 'HTML']
 	timestampedReports = true
 }
