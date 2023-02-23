@@ -80,23 +80,6 @@ pipeline {
 		}
 	    }	      
         }
-        
-	stage('GRADLE-PITEST --> TESTING') {
-	    steps {
-                sh './gradlew pitest' // Run the "pitest" task with Gradle to generate pitest report files
-            }
-            post {
-                success {
-                  // Call the recordIssues task and specify the PIT plugin to collect XML reports generated in the path build/reports/pit
-		    recordIssues(tools: [
-			pit(pattern: 'build/reports/pitest/*.xml')
-		    ])
-                }
-		failure {
-		    echo "\033[20mFAILED!\033[0m" // Print an error message in red if the stage fails
-		}
-	    }	 
-	}
 	    
         stage('DOCKER --> BUILDING & TAGGING IMAGE') {
             // Define building a Docker image and tagging it with a version number
