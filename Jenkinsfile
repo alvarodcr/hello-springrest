@@ -20,13 +20,13 @@ pipeline {
      
 	stage('GRADLE --> TESTING') {
 	    steps {
-                sh './gradlew test jacocoTestReport' // Run the "test" and "build" tasks with Gradle
+                sh './gradlew test jacocoTestReport' // Run the "test" and "jacocoTestReport" tasks with Gradle
             }
             post {
                 always {
 		    archiveArtifacts 'build/libs/*.jar' // Archive the generated JAR files
                     jacoco(
-			//execPattern: '**/**.exec', // Specify the pattern for the exec files
+			execPattern: 'build/jacoco/**.exec', // Specify the pattern for the exec files
 			classPattern: '**/classes', // Specify the pattern for the Java class files
 			sourcePattern: '**/src/main/java', // Specify the pattern for the source code files
 		    )
