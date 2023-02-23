@@ -23,7 +23,7 @@ pipeline {
                 sh './gradlew test jacocoTestReport' // Run the "test" and "jacocoTestReport" tasks with Gradle
             }
             post {
-                sucess {
+                success {
 		    archiveArtifacts 'build/libs/*.jar' // Archive the generated JAR files
                     jacoco(
 			execPattern: 'build/jacoco/*.exec', // Specify the pattern for the exec files
@@ -42,7 +42,7 @@ pipeline {
                 sh './gradlew check'
             }
             post {
-                sucess {
+                success {
 		    publishHTML(target: [
                     allowMissing: false,
                     alwaysLinkToLastBuild: true,
