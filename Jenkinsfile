@@ -39,7 +39,7 @@ pipeline {
 	
 	stage('GRADLE-PMD --> TESTING') {
             steps {
-                sh 'gradle pmdMain'
+                sh 'gradle check'
                 publishHTML(target: [
                     allowMissing: false,
                     alwaysLinkToLastBuild: true,
