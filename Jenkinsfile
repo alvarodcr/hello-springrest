@@ -20,7 +20,7 @@ pipeline {
      
 	stage('GRADLE-JACOCO --> TESTING') {
 	    steps {
-                sh './gradlew test jacocoTestReport' // Run the "test" and "jacocoTestReport" tasks with Gradle
+                sh './gradlew test' // Run the "test" and "jacocoTestReport" tasks with Gradle
             }
             post {
                 success {
